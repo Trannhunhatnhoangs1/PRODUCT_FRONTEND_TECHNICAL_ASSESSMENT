@@ -1,0 +1,163 @@
+{
+  "uuid": "mock-api-product-showcase",
+  "lastMigration": 29,
+  "name": "Product Showcase API",
+  "endpointPrefix": "api",
+  "latency": 100,
+  "port": 3001,
+  "hostname": "0.0.0.0",
+  "routes": [
+    {
+      "uuid": "route-login",
+      "type": "http",
+      "documentation": "Login endpoint - accepts any username/password",
+      "method": "post",
+      "endpoint": "login",
+      "responses": [
+        {
+          "uuid": "response-login",
+          "body": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MzAwMDAwMDB9.mock-signature\",\n  \"user\": {\n    \"id\": 1,\n    \"username\": \"admin\",\n    \"name\": \"Administrator\"\n  }\n}",
+          "latency": 500,
+          "statusCode": 200,
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "label": "Success"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "route-logout",
+      "type": "http",
+      "documentation": "Logout endpoint",
+      "method": "post",
+      "endpoint": "logout",
+      "responses": [
+        {
+          "uuid": "response-logout",
+          "body": "{\n  \"message\": \"Logged out successfully\"\n}",
+          "latency": 200,
+          "statusCode": 200,
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "label": "Success"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "route-products",
+      "type": "http",
+      "documentation": "Get all products",
+      "method": "get",
+      "endpoint": "product",
+      "responses": [
+        {
+          "uuid": "response-products",
+          "bodyFile": "products-data.json",
+          "latency": 300,
+          "statusCode": 200,
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "label": "Success"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "route-product-detail",
+      "type": "http",
+      "documentation": "Get product by ID",
+      "method": "get",
+      "endpoint": "product/:id",
+      "responses": [
+        {
+          "uuid": "response-product-detail",
+          "body": "{{#each (dataRaw 'products-data.json')}}{{#eq id (toInt (urlParam 'id'))}}{{{stringify this}}}{{/eq}}{{/each}}",
+          "latency": 200,
+          "statusCode": 200,
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "label": "Success"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type,Authorization"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": []
+}

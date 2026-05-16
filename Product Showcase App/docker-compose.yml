@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # Mock API service using Mockoon
+  mock-api:
+    image: mockoon/cli:latest
+    container_name: product-showcase-api
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./mockoon-data.json:/data/mockoon-data.json:ro
+      - ./products-data.json:/data/products-data.json:ro
+    command: ["--data", "/data/mockoon-data.json", "--port", "3001"]
+    networks:
+      - product-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/product"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Frontend application
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://localhost:3001/api
+    container_name: product-showcase-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      mock-api:
+        condition: service_healthy
+    networks:
+      - product-network
+
+networks:
+  product-network:
+    driver: bridge
